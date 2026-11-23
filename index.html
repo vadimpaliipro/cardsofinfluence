@@ -789,21 +789,6 @@ if(/dengi\.vadimpalii/.test(h)&&!/dengi/.test(location.hostname))g("to_dengi");}
   </div>
 </div>
 
-<!-- Окно теста -->
-<div class="mod" id="mTest" role="dialog" aria-modal="true" aria-labelledby="mtT">
-  <div class="box">
-    <button type="button" class="x" data-close aria-label="Закрыть"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <h3 id="mtT">Не готовы сейчас? Узнайте свою сильную колоду за 2 минуты</h3>
-    <div class="three">
-      <button type="button" class="flip" aria-label="Вытянуть карту"><div class="flip-in"><div class="side front"></div><div class="side back"><b>?</b><span>ответ — в тесте</span></div></div></button>
-      <button type="button" class="flip" aria-label="Вытянуть карту"><div class="flip-in"><div class="side front"></div><div class="side back"><b>?</b><span>ответ — в тесте</span></div></div></button>
-      <button type="button" class="flip" aria-label="Вытянуть карту"><div class="flip-in"><div class="side front"></div><div class="side back"><b>?</b><span>ответ — в тесте</span></div></div></button>
-    </div>
-    <p>Вытяните свою</p>
-    <a href="https://t.me/vadim_palii_bot" class="btn btn-gold" id="testBtn" target="_blank" rel="noopener">Пройти тест в Telegram</a>
-  </div>
-</div>
-
 <!-- Окно видео -->
 <div class="mod" id="mVideo" role="dialog" aria-modal="true" aria-label="Видеоотзыв">
   <div class="box vbox">
@@ -842,7 +827,6 @@ var CONFIG = {
   var buyUrl='pay.html?'+pq.toString();
   var testUrl=CONFIG.bot+'?start='+encodeURIComponent(CONFIG.startTest);
   document.querySelectorAll('[data-buy]').forEach(function(a){a.href=buyUrl});
-  document.getElementById('testBtn').href=testUrl;
 
   /* таймер с перелистыванием цифр */
   var timers=[].slice.call(document.querySelectorAll('[data-timer]'));
@@ -972,16 +956,7 @@ var CONFIG = {
     new IntersectionObserver(function(es){onPrice=es[0].isIntersecting;if(onPrice&&!seenPrice){seenPrice=true;goal('scroll_price')}sb()},{threshold:.15}).observe(priceSec);
   }
 
-  /* окно теста: уход курсора, 3 минуты без «Участвовать», быстрый скролл вверх на телефоне; один раз за визит */
-  var paid=false,shown=sstore('kv_test_shown')==='1';
-  function showTest(){if(shown||paid||document.querySelector('.mod.on'))return;shown=true;sstore('kv_test_shown','1');openM('mTest');goal('open_test')}
-  document.addEventListener('mouseout',function(e){if(!e.relatedTarget&&e.clientY<=0)showTest()});
-  setTimeout(showTest,180000);
-  var lastY=window.scrollY,lastT=performance.now(),navAt=0;
-  document.addEventListener('click',function(e){if(e.target.closest('a[href^="#"]'))navAt=performance.now()});
-  window.addEventListener('scroll',function(){var y=window.scrollY,t=performance.now(),dy=y-lastY,dt=t-lastT;
-    if(dt>0&&dt<200&&dy<0&&(-dy/dt)>3.2&&y>800&&t-navAt>2000&&window.innerWidth<900)showTest();lastY=y;lastT=t},{passive:true});
-  document.getElementById('testBtn').addEventListener('click',function(){goal('click_test')});
+  var paid=false;
 })();
 </script>
 </body>
